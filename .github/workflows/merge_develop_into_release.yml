@@ -1,0 +1,21 @@
+name: Automatic Merge To Release
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.message, 'to-release') }}
+
+    steps: 
+      - uses: actions/checkout@master
+
+      - name: Merge develop -> release
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: develop
+          target_branch: release
+          github_token: ${{ github.token }}
